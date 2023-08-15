@@ -10,30 +10,23 @@ import java.util.Properties;
 @Component
 public class EmailService {
     public void sendEmail(String recipient, String subject, String content) throws MessagingException {
-        // Setup mail server properties
-        Properties properties = new Properties();
-        properties.put("mail.smtp.host", "smtp.gmail.com");
-        properties.put("mail.smtp.port", "587");
-        properties.put("mail.smtp.auth", "true");
-        properties.put("mail.smtp.starttls.enable", "true");
+
         // Add more properties as needed
 
         // Create a Session with authentication, if required
-        Session session = Session.getInstance(properties, new Authenticator() {
-            @Override
-            protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication("asilpa09@gmail.com", "MyLilKittu@23");
-            }
-        });
 
-        // Create a MimeMessage
-        Message message = new MimeMessage(session);
-        message.setFrom(new InternetAddress("asilpa09@gmail.com"));
-        message.setRecipient(Message.RecipientType.TO, new InternetAddress(recipient));
-        message.setSubject(subject);
-        message.setContent(content, "text/html");
+        Session emailSession = EmailSessionProvider.getEmailSession();
+        try {
+            Message message = new MimeMessage(emailSession);
+            message.setFrom(new InternetAddress("xxx@gmail.com")); // Replace with sender email
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(recipient));
+            message.setSubject(subject);
+            message.setText(content);
 
-        // Send the message
-        Transport.send(message);
+            Transport.send(message);
+            System.out.println("Email sent successfully!");
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
     }
 }

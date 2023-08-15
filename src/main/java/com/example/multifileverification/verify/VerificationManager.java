@@ -47,13 +47,7 @@ public class VerificationManager {
             sendPackageVerificationNotification(packageId, recipient, packageAnalysis);
         });
 
-        // Introduce a delay to allow asynchronous computation to complete.
-        try {
-            finalResult.get(); // Wait for verification and notification to complete
-            TimeUnit.SECONDS.sleep(2); // Delay for demonstration
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
     }
 
     private void sendPackageVerificationNotification(String packageId, String recipient, String packageAnalysis) {
